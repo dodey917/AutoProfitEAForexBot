@@ -11,32 +11,27 @@ logger = logging.getLogger(__name__)
 # Your bot token
 TOKEN = "7567550205:AAGzh9JZkEFSjNWhbsZAWWqLMUL8KswI4Ck"
 
-# Your channel and group info
+# Your channel info
 CHANNEL_LINK = "https://t.me/eaexperts"
-GROUP_LINK = "https://t.me/Z5293362763"
-CHANNEL_USERNAME = "@eaexperts"  # Without the '@' if using deep linking
-GROUP_USERNAME = "Z5293362763"   # Without the '@' if using deep linking
+CHANNEL_USERNAME = "eaexperts"  # Without the '@'
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Send a welcome message with buttons when the command /start is issued."""
+    """Send a welcome message with channel button when the command /start is issued."""
     user = update.effective_user
     
-    # Create inline keyboard with buttons
+    # Create inline keyboard with single button
     keyboard = [
         [
             InlineKeyboardButton("Join Our Channel", url=CHANNEL_LINK),
-            InlineKeyboardButton("Join Our Group", url=GROUP_LINK)
-        ],
-        [InlineKeyboardButton("I've Joined ✅", callback_data="joined")]
+            InlineKeyboardButton("I've Joined ✅", callback_data="joined")
+        ]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
     welcome_message = (
         f"Hello {user.first_name}! 👋\n\n"
         "Welcome to Forex Experts!\n\n"
-        "Click the buttons below to join our community:\n"
-        "1. Join our channel for expert signals\n"
-        "2. Join our group for discussions\n\n"
+        "Click the button below to join our exclusive channel for expert signals:\n\n"
         "After joining, click 'I've Joined' below!"
     )
     
@@ -53,25 +48,24 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     if query.data == "joined":
         await query.edit_message_text(
             text="🎉 Well done! You are on your way to becoming a trading expert!\n\n"
-                 "Feel free to explore our channel and group for valuable insights.",
+                 "You now have access to our premium Forex signals and analysis.",
             reply_markup=None
         )
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
     keyboard = [
-        [InlineKeyboardButton("Join Channel", url=CHANNEL_LINK)],
-        [InlineKeyboardButton("Join Group", url=GROUP_LINK)]
+        [InlineKeyboardButton("Join Channel", url=CHANNEL_LINK)]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
     help_text = (
         "🤖 Forex Experts Bot Help\n\n"
-        "This bot helps you connect with our Forex community.\n\n"
+        "This bot provides access to our premium Forex channel.\n\n"
         "Available commands:\n"
-        "/start - Get welcome message with links\n"
+        "/start - Get welcome message with channel link\n"
         "/help - Show this help message\n\n"
-        "Use the buttons below to join our community:"
+        "Click below to join our channel:"
     )
     await update.message.reply_text(
         help_text,
@@ -81,12 +75,12 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Handle any other messages."""
     keyboard = [
-        [InlineKeyboardButton("Get Started", callback_data="start")]
+        [InlineKeyboardButton("Join Channel", url=CHANNEL_LINK)]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     
     await update.message.reply_text(
-        "Thanks for your message! Use /start to begin or click below:",
+        "To get started, please join our channel using the button below:",
         reply_markup=reply_markup
     )
 

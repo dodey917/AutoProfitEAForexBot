@@ -3,7 +3,7 @@ from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 
 # Configuration - Set these in Render.com environment variables
-BOT_TOKEN = os.getenv('7567550205:AAGzh9JZkEFSjNWhbsZAWWqLMUL8KswI4Ck')
+BOT_TOKEN = os.getenv('8448863022:AAG1u9aCnHoKlDam4Go_N_IBbcFv4KHLG8c')
 CHANNEL_LINK = "https://t.me/eaexperts"
 CHANNEL_USERNAME = "@eaexperts"
 

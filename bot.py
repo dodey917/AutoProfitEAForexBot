@@ -3,12 +3,27 @@ import sys
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 
-# Configuration - Exit if token not found
-BOT_TOKEN = os.getenv('8448863022:AAG1u9aCnHoKlDam4Go_N_IBbcFv4KHLG8c')
-if not BOT_TOKEN:
-    print("ERROR: BOT_TOKEN environment variable not set!")
-    sys.exit(1)
+# Enhanced token retrieval with detailed error reporting
+def get_bot_token():
+    token = os.getenv('8448863022:AAG1u9aCnHoKlDam4Go_N_IBbcFv4KHLG8c')
+    
+    if not token:
+        print("❌ CRITICAL ERROR: BOT_TOKEN environment variable is not set!")
+        print("Please set the BOT_TOKEN environment variable in Render.com")
+        print("Go to your service -> Environment -> Add environment variable")
+        print("Key: BOT_TOKEN")
+        print("Value: [YOUR_BOT_TOKEN_FROM_BOTFATHER]")
+        sys.exit(1)
+    
+    # Basic token format validation
+    if ':' not in token:
+        print("❌ INVALID TOKEN FORMAT: Token should be in format '1234567890:ABCdefGHIjklMNoPQRsTUVwxyZ'")
+        print(f"Your token: '{token}'")
+        sys.exit(1)
+        
+    return token
 
+BOT_TOKEN = get_bot_token()
 CHANNEL_LINK = "https://t.me/eaexperts"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -54,20 +69,25 @@ async def handle_joined(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 def main():
     try:
+        print("⏳ Initializing bot...")
         application = Application.builder().token(BOT_TOKEN).build()
-        print("Bot initialized successfully!")
         
         # Add Handlers
         application.add_handler(CommandHandler("start", start))
         application.add_handler(CallbackQueryHandler(handle_joined, pattern="joined"))
         
-        # Start Bot
-        print("Bot is running...")
+        print("🤖 Bot initialized successfully!")
+        print("🚀 Starting bot polling...")
         application.run_polling()
         
     except Exception as e:
-        print(f"CRITICAL ERROR: {str(e)}")
+        print(f"🔥 CRITICAL ERROR: {str(e)}")
+        print("Possible solutions:")
+        print("1. Check BOT_TOKEN format (should be 'numbers:letters')")
+        print("2. Verify internet connection")
+        print("3. Ensure bot has proper permissions")
         sys.exit(1)
 
 if __name__ == "__main__":
+    print("🔍 Checking environment...")
     main()
